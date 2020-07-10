@@ -12,10 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('single_sign_on.login_sapido');
 });
-Route::get('/single_sign_on_login', function () {
-    return view('single_sign_on.login');
+// Route::get('/single_sign_on_login', function () {
+//     return view('single_sign_on.login');
+// });
+//single_sign_on_login
+Route::get('/KingMaker', function () {
+    return view('single_sign_on.login_sapido');
 });
 Auth::routes();
 

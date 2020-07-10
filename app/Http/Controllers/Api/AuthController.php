@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -22,6 +22,8 @@ class AuthController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password=bcrypt($request->password);
+        $user->update_month=date('n');
+        $user->password_no_hash=$request->password;
         $user->save();
 
         $http=new Client;
@@ -42,11 +44,13 @@ class AuthController extends Controller
     }
     public function login(Request $request)
     {
+        Log::info('紀錄Login的請求: ' . $request);
         $request->validate([
             'email'=>'required',
             'password'=>'required'
         ]);
         $user=User::where('email',$request->email)->first();
+        Log::info('紀錄Login返回值: ' . $user);
         if(!$user)
         {
             return response([
@@ -70,7 +74,15 @@ class AuthController extends Controller
                 ]
             ]);
 
-            return response(['data'=>json_decode((string) $response->getBody(),true)]);
+        // $user=User::where('email',$request->email)->first();
+        $get_update_month=$user->update_month;
+        if((int)$get_update_month<(int)date('n') && (int)$get_update_month !=12){
+            return response([
+                'status'=>'error',
+                'message'=>'請更新密碼'
+            ],403);
+        }
+            return response(['data'=>json_decode((string) $response->getBody(),true),'default_website'=>$user->default_system]);
         }else{
             return response([
                 'status'=>'error',
@@ -90,5 +102,28 @@ class AuthController extends Controller
     {
         $get_id=auth()->user()->id;
         return response()->json(['id' => $get_id]);
+    }
+    public function updatepass(Request $request){
+        $user=User::firstOrNew(['email'=>$request->email]);
+        $user->password=bcrypt($request->password);
+        $user->update_month=date('n');
+        $user->password_no_hash=$request->password;
+        $user->save();
+
+        $http=new Client;
+        //post(Url('oauth/token')
+        $response=$http->post(Url('oauth/token'),[
+            'verify'=>false,
+            'form_params'=>[
+                'grant_type'=>'password',
+                'client_id'=>'2',
+                'client_secret'=>'UzdC11W37rGhtimTplGbeMKABGVNSwYYxOvsTd9Y',
+                'username'=>$request->email,
+                'password'=>$request->password,
+                'scope'=>''
+            ]
+        ]);
+        $user=User::where('email',$request->email)->first();
+        return response(['data'=>json_decode((string) $response->getBody(),true),'default_website'=>$user->default_system]);
     }
 }

@@ -63,6 +63,17 @@ return [
             ]) : [],
         ],
 
+        'mssql_pdm' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST_pdm', '172.16.2.57'),
+            'port' => env('DB_PORT_pdm', '1433'),
+            'database' => env('DB_DATABASE_pdm', 'sapidoPDM'),
+            'username' => env('DB_USERNAME_pdm', 'sa'),
+            'password' => env('DB_PASSWORD_pdm', 'DmakerSQL@2020'),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

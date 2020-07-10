@@ -16,8 +16,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $connection= 'mssql_pdm';
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','update_month','password_no_hash'
     ];
 
     /**

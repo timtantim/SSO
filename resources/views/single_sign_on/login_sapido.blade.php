@@ -60,21 +60,28 @@
 </head>
 
 <body>
-    <form class="form-signin">
-        <h1>請輸入帳號密碼</h1>
-        <input id="email" type="email" name="email" class="form-control" placeholder="登入帳號" required autofocus>
-        <br>
-        <input id="password" type="password" name="password" class="form-control" placeholder="登入密碼" required>
-        <div class="checkbox mb-3">
+    {{-- <form class="form-signin"> --}}
+        <div class="container">
+
+            <div class="row"><h1>請輸入帳號密碼</h1></div>
+            <div class="row"><input id="email" type="email" name="email" class="form-control" placeholder="登入帳號" required autofocus></div>
+            <div class="row"><input id="password" type="password" name="password" class="form-control" placeholder="登入密碼" required></div>
+            <div class="row" id="login_container"><button class="btn" type="submit" id="btn_login">登入</button></div>
+            <div class="row" id="update_container" style="display:none;"><button class="btn" id="update_password">更新</button></div>
+            <div class="row"><p class="mt-5 mb-3 text-muted">&copy; 金智洋科技有限公司開發</p></div>
         </div>
-        <button class="btn" type="submit" id="btn_login">登入</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 金智洋科技有限公司開發</p>
-    </form>
 </body>
 <script>
     $( document ).ready(function() {
+        let default_website;
+        let token;
         let before=document.referrer;
         console.log(window.location.host);
+        //檢查是否有Cookie，如果有的話就自動轉跳
+        value_or_null = (document.cookie.match(/^(?:.*;)?\s*sso\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1];
+        if(value_or_null){
+            location.href = before+'?sso=' + value_or_null;
+        }
         $('#btn_login').click(function(){
            let get_email=$('#email').val();
            let get_password=$('#password').val();
@@ -89,25 +96,72 @@
                  $.ajax({
                    type: 'POST',
                    url: 'https://'+window.location.host+'/api/login',
+                   async:false,
                    data: user,   
                       success: function(data)
                       {
-                        // let expire_days = 1; // 過期日期(天)
-                        // var d = new Date();
-                        // d.setTime(d.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-                        // var expires = "expires=" + d.toGMTString();
-                        // document.cookie = "sso="+data.data.access_token + "; " + expires + ';domain=.erp.com; path=/';
-                        location.href = before+'?sso=' + data.data.access_token;
-                        // location.href = before+'?sso=123';
-                      },
-                      error: function(e)
-                      {
-                        alert('帳密錯誤');
+                        token=data.data.access_token;
+                        default_website=data.default_website;
+                        //document.cookie = `sso=${token}; max-age=3600; path=/;`;
+                        if(before==""){
+                            location.href = default_website+'?sso=' + token;
+                        }else if(before.split('?')[0] != "https://192.168.39.73:8885/KingMaker" && before.split('?')[0] !='https://211.22.242.18:8885/KingMaker'){
+                            location.href = before+'?sso=' + token;
+                        }else{
+                            location.href = default_website+'?sso=' + token;
+                        }
+                        // if(before==""){
+                        //     location.href = default_website+'?sso=' + token;
+                        // }else{
+                        //     location.href = before+'?sso=' + token;
+                        // }
+                      },error: function (xhr, status, error) {
+                            let err = JSON.parse(xhr.responseText);
+                            alert(err.message);
+                            if(err.message=='請更新密碼')
+                            {
+                                $('#login_container').css('display','none');
+                                $('#update_container').css('display','');
+                                $('#password').val('');
+                            }
                       }
                   });
            }
         });
 
+        $('#update_password').click(function(){
+            let get_email=$('#email').val();
+           let get_password=$('#password').val();
+           if(get_email !="" && get_password!="")
+           {
+               let user={
+                    email:get_email,
+                    password:get_password
+               }
+                 $.ajax({
+                   type: 'POST',
+                   url: 'https://'+window.location.host+'/api/updatepass',
+                   async:false,
+                   data: user,   
+                      success: function(data)
+                      {
+                        token=data.data.access_token;
+                        default_website=data.default_website;
+                        //document.cookie = `sso=${token}; max-age=3600; path=/;`;
+                        if(before==""){
+                            location.href = default_website+'?sso=' + token;
+                        }else if(before.split('?')[0] != "https://192.168.39.73:8885/KingMaker" && before.split('?')[0] !='https://211.22.242.18:8885/KingMaker'){
+                            location.href = before+'?sso=' + token;
+                        }else{
+                            location.href = default_website+'?sso=' + token;
+                        }
+                      },error: function (xhr, status, error) {
+                            let err = JSON.parse(xhr.responseText);
+                            alert(err.message);
+                      }
+                  });
+           }
+        });
     });
 </script>
 
