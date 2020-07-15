@@ -124,7 +124,7 @@ class AuthController extends Controller
 
 
 
-        return response(['data'=>json_decode((string)$response_paas->getBody(),true)]);
+        return response(['data'=>'註冊帳號成功!']);
 
     }
     public function login(Request $request)

@@ -87,7 +87,7 @@
         let default_website;
         let token;
         let before=document.referrer;
-        console.log(window.location.host);
+        //console.log(window.location.host);
         //檢查是否有Cookie，如果有的話就自動轉跳
         value_or_null = (document.cookie.match(/^(?:.*;)?\s*sso\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1];
         if(value_or_null){
