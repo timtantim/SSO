@@ -24,3 +24,7 @@ Route::get('/KingMaker', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/KingMakerRegister',function(){
+    return view('single_sign_on.register');
+});
