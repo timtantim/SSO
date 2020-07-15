@@ -135,6 +135,8 @@
                             success: function(data)
                             {
                              //  alert(JSON.stringify(data));
+                             let row=`<option value="-1">請選擇預設系統</option>`;
+                             $('#default_system').append(row);
                               for(let i=0; i<data.length;i++){
                                   let row=`<option value="${data[i].url}">${data[i].name}</option>`;
                                   $('#default_system').append(row);
@@ -160,7 +162,7 @@
            let get_default_factory=$('#default_factory option:selected').val();
 
 
-           if(get_email !="" && get_password!="" && get_default_factory!='-1')
+           if(get_email !="" && get_password!="" && get_default_factory!='-1' && get_default_website!='-1')
            {
                let user={
                     email:get_email,
