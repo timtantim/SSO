@@ -1,5 +1,8 @@
 <?php
 
+use App\Mail\Notify_Manager;
+use Illuminate\Support\Facades\Mail;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,4 +30,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/KingMakerRegister',function(){
     return view('single_sign_on.register');
+});
+
+Route::prefix('admin')->name('admin.')->group(function(){
+    Route::resource('/verify','VerifyController');
+});
+
+
+Route::get('/email', function () {
+    Mail::to('yutengchen0116@gmail.com')->send(new Notify_Manager());
+    return new Notify_Manager();
 });

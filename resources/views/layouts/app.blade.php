@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+    @yield('assets')
 </head>
 <body>
     <div id="app">
@@ -73,10 +75,13 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <div class="container-fluid">
+                @yield('content')
+            </div>
         </main>
     </div>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    @yield ('customer_lib')
     @yield('scripts')
 </body>
 </html>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>登入</title>
+    <title>註冊</title>
     <!-- <script src="source/jquery.js"></script>
     <link rel="stylesheet" href="source/bootstrap.css"> -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"
@@ -74,6 +74,10 @@
                 </div>
             </div>
             <div class="row">
+               <select multiple class="form-control" id="user_system_select" style="height:100px;">
+               </select>
+            </div>
+            <div class="row">
                 <div class="form-group">
                     <select class="form-control" id="default_system"></select>
                 </div>
@@ -125,6 +129,7 @@
                     let get_default_website=$('#default_factory option:selected').val();
                     if(get_default_website!='-1'){
                         $('#default_system').empty();
+                        $('#user_system_select').empty();
                         let factory_data={
                         factory:get_default_website
                         };
@@ -140,6 +145,8 @@
                               for(let i=0; i<data.length;i++){
                                   let row=`<option value="${data[i].url}">${data[i].name}</option>`;
                                   $('#default_system').append(row);
+                                  let row_user_system=`<option value="${data[i].id}">${data[i].name}</option>`;
+                                  $('#user_system_select').append(row_user_system);
                               }
                             },error: function (xhr, status, error) {
                              let err = JSON.parse(xhr.responseText);
@@ -160,9 +167,10 @@
            let get_name=$('#name').val();
            let get_default_website=$('#default_system option:selected').val();
            let get_default_factory=$('#default_factory option:selected').val();
+           let get_user_system=$('#user_system_select').val();
 
 
-           if(get_email !="" && get_password!="" && get_default_factory!='-1' && get_default_website!='-1')
+           if(get_email !="" && get_password!="" && get_default_factory!='-1' && get_default_website!='-1' && get_user_system.length!=0)
            {
                let user={
                     email:get_email,
@@ -170,7 +178,8 @@
                     name:get_name,
                     password_confirmation:get_password_confirm,
                     default_system:get_default_website,
-                    default_factory:get_default_factory
+                    default_factory:get_default_factory,
+                    user_system:get_user_system
                }
                 // url: 'https://'+window.location.hostname+'/api/login',
                 //http://erp.com/api/public/library
@@ -182,6 +191,12 @@
                       success: function(data)
                       {
                         alert('註冊成功!');
+                        $('#name').val('');
+                        $('#email').val('');
+                        $('#password').val('');
+                        $('#password-confirm').val('');
+                        $('#default_factory').val('1');
+                        $('#default_system').val('1');
                       },error: function (xhr, status, error) {
                             let err = JSON.parse(xhr.responseText);
                             alert(err.message);

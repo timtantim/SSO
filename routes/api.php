@@ -21,6 +21,9 @@ Route::post('/updatepass','Api\AuthController@updatepass');
 Route::post('/loadchildwebsite','Api\AuthController@loadchildwebsite');
 Route::post('/loadfactory','Api\AuthController@loadfactory');
 
+Route::post('/verifyuser','Api\VerifyApiController@verifyuser');
+
+
 
 
 Route::middleware('cors')->post('/login','Api\AuthController@login');
