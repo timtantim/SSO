@@ -44,7 +44,7 @@ class VerifyApiController extends Controller
                             'user_auth'=>'1'
                         ]
                     ]);
-                    Mail::to($get_all_system[$i]['email'])->send(new Notify_Manager());
+                    Mail::to($get_all_system[$i]['email'])->send(new Notify_Manager($get_user_id,''));
 
                 }
                 if($get_all_system[$i]['name']=='微型系統'){
@@ -54,7 +54,7 @@ class VerifyApiController extends Controller
                         'body' => json_encode($user_id_user_name_to_json),
                     ]);
 
-                    Mail::to($get_all_system[$i]['email'])->send(new Notify_Manager());
+                    Mail::to($get_all_system[$i]['email'])->send(new Notify_Manager($get_user_id,''));
                 }
             }
             DB::table('users')->where('id',$get_user_id)->update(['verify'=>'1']);

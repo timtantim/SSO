@@ -34,10 +34,14 @@ Route::get('/KingMakerRegister',function(){
 
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::resource('/verify','VerifyController');
+    Route::resource('/manager','ManagerController');
 });
 
 
 Route::get('/email', function () {
-    Mail::to('yutengchen0116@gmail.com')->send(new Notify_Manager());
-    return new Notify_Manager();
+
+    // Mail::to('yutengchen0116@gmail.com')->send(new Notify_Manager());
+    // return new Notify_Manager();
+    Mail::to('yutengchen0116@gmail.com')->send(new Notify_Manager('789','456456456'));
+    return new Notify_Manager('789','456456456');
 });

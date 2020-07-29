@@ -139,6 +139,7 @@ class AuthController extends Controller
     }
     public function login(Request $request)
     {
+   
         Log::info('紀錄Login的請求: ' . $request);
         $request->validate([
             'email'=>'required',
@@ -154,10 +155,17 @@ class AuthController extends Controller
                 'message'=>'該用戶不存在'
             ],403);
         }
-        if(Hash::check($request->password,$user->password))
+        
+        $get_eamil=trim($request->email);
+        $get_pass=trim($request->password);
+        $user=\json_decode($user,true);
+    
+
+        // 'client_id'=>'2',
+        // 'client_secret'=>'UzdC11W37rGhtimTplGbeMKABGVNSwYYxOvsTd9Y',
+        if(Hash::check($request->password,$user[0]['password']))
         {
-            $get_eamil=$request->email;
-            $get_pass=$request->password;
+           
             $http=new Client;
             //post(Url('oauth/token')
             $response=$http->post(Url('oauth/token'),[
@@ -171,7 +179,7 @@ class AuthController extends Controller
                     'scope'=>''
                 ]
             ]);
-
+         
         // $user=User::where('email',$request->email)->first();
         $get_update_month=$user[0]['update_month'];
         if((int)$get_update_month<(int)date('n') && (int)$get_update_month !=12){

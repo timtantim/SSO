@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Notify_Manager extends Mailable
+class Notify_User extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,11 +17,11 @@ class Notify_Manager extends Mailable
      * @return void
      */
     protected $account;
-    protected $password;
-    public function __construct(string $account, string $password)
+    protected $system;
+    public function __construct(string $account, string $system)
     {
         $this->account=$account;
-        $this->password=$password;
+        $this->system=$system;
     }
 
     /**
@@ -31,11 +31,10 @@ class Notify_Manager extends Mailable
      */
     public function build()
     {
-        // return $this->markdown('emails.notify');
         $userArray = [
             'account' => $this->account,
-            'password' =>$this->password
+            'system' =>$this->system
         ];
-        return $this->markdown('emails.notify')->with(['users' => $userArray]);
+        return $this->markdown('emails.notify_user')->with(['users' => $userArray,'system'=>$system]);
     }
 }

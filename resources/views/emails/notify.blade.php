@@ -6,7 +6,8 @@
 @component('mail::button', ['url' => 'http://sso.com/login'])
 檢視用戶
 @endcomponent
-
+用戶帳號 : {{ $users['account'] }}<br>
+{{-- 用戶密碼 : {{ $users['password'] }}<br> --}}
 Thanks,<br>
 {{ config('app.name') }}
 @endcomponent

@@ -12,6 +12,13 @@
             </div>
         </div>
         @endif
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <center><a href="{{ route('admin.manager.index') }}"><h4>系統管理員</h4></a></center>
+                 </div>
+            </div>
+        </div>
         {{-- <div class="col-md-6  px-md-5 mb-3">
             <div class="card">
                 <div class="card-header"></div>

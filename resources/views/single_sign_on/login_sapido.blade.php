@@ -62,13 +62,13 @@
 <body>
     {{-- <form class="form-signin"> --}}
         <div class="container">
-
-            <div class="row"><h1>請輸入帳號密碼</h1></div>
+            <div class="row"><img src="img/kimaker_logo.png" width="260px;" alt=""></div>
+            <div class="row" style="margin-top: 60px;"><center><h1>請輸入帳號密碼</h1></center></div>
             <div class="row"><input id="email" type="email" name="email" class="form-control" placeholder="登入帳號" required autofocus></div>
             <div class="row"><input id="password" type="password" name="password" class="form-control" placeholder="登入密碼" required></div>
             <div class="row" id="login_container"><button class="btn" type="submit" id="btn_login">登入</button></div>
             <div class="row" id="update_container" style="display:none;"><button class="btn" id="update_password">更新</button></div>
-            <div class="row"><p class="mt-5 mb-3 text-muted">&copy; 金智洋科技有限公司開發</p></div>
+            <div class="row"><center><p class="mt-5 mb-3 text-muted">&copy; 金智洋科技有限公司開發</p></center></div>
         </div>
 </body>
 <script>
@@ -95,7 +95,7 @@
                 //http://erp.com/api/public/library
                  $.ajax({
                    type: 'POST',
-                   url: 'https://'+window.location.host+'/api/login',
+                   url: 'http://'+window.location.host+'/api/login',
                    async:false,
                    data: user,   
                       success: function(data)

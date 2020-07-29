@@ -22,7 +22,7 @@ Route::post('/loadchildwebsite','Api\AuthController@loadchildwebsite');
 Route::post('/loadfactory','Api\AuthController@loadfactory');
 
 Route::post('/verifyuser','Api\VerifyApiController@verifyuser');
-
+Route::post('/setauthuser','Api\ManagerApiController@setauthuser');
 
 
 
